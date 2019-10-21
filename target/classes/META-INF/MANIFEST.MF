@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: Jpa-case
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: long.chen
+Implementation-Vendor-Id: com.example
+Build-Jdk: 1.8.0_212
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/Jpa-case
+Created-By: Maven Integration for Eclipse
+
