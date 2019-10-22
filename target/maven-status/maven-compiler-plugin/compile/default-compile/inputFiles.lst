@@ -1,6 +1,6 @@
-D:\symbio-ppro\WOOL\src\main\java\com\example\demo\repository\AccountRepo.java
-D:\symbio-ppro\WOOL\src\main\java\com\example\demo\controller\AccountController.java
-D:\symbio-ppro\WOOL\src\main\java\com\example\demo\entity\VipType.java
-D:\symbio-ppro\WOOL\src\main\java\com\example\demo\entity\Account.java
-D:\symbio-ppro\WOOL\src\main\java\com\example\demo\JpaCaseApplication.java
-D:\symbio-ppro\WOOL\src\main\java\com\example\demo\ApplicationStartup.java
+D:\workspace-mall\WOOL\src\main\java\com\example\demo\entity\VipType.java
+D:\workspace-mall\WOOL\src\main\java\com\example\demo\controller\AccountController.java
+D:\workspace-mall\WOOL\src\main\java\com\example\demo\ApplicationStartup.java
+D:\workspace-mall\WOOL\src\main\java\com\example\demo\JpaCaseApplication.java
+D:\workspace-mall\WOOL\src\main\java\com\example\demo\entity\Account.java
+D:\workspace-mall\WOOL\src\main\java\com\example\demo\repository\AccountRepo.java

@@ -1,0 +1,6 @@
+com\example\demo\JpaCaseApplication.class
+com\example\demo\entity\VipType.class
+com\example\demo\controller\AccountController.class
+com\example\demo\ApplicationStartup.class
+com\example\demo\repository\AccountRepo.class
+com\example\demo\entity\Account.class
