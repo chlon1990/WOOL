@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.entity.Account;
 import com.example.demo.entity.VipType;
+import com.example.demo.entity.WoolResult;
 import com.example.demo.repository.AccountRepo;
 
 @RestController
@@ -22,58 +23,75 @@ public class AccountController {
 	private AccountRepo accountRepo;
 
 	@GetMapping("/checkAccount")
-	public Map<String, Object> findAccount(Account account) {
-		
-		
+	public WoolResult findAccount(Account account) {
 
-		Map<String, Object> res = new HashMap<>();
-		res.put("state", 0);
 		
 		if(account == null || account.getCode() == null || account.getMeid() == null ) {
-			return res;
+			return WoolResult.fail();
 		}
 
 		Account storyAcc = accountRepo.findByCode(account.getCode());
 
 		if (storyAcc == null) {
-			return res;
+			return WoolResult.fail();
 		}
 
-		if (storyAcc.getMeid() == null) {
-
+		if (storyAcc.getMeid() == null && storyAcc.getEndTime() == null ) {
+			// 第一次激活设备
 			Date curr = new Date();
-
 			storyAcc.setCreateTime(curr);
 			storyAcc.setMeid(account.getMeid());
 
 			if (storyAcc.getVipType() == VipType.DAY) {
 				storyAcc.setEndTime(DateUtils.addDays(curr, 1));
-
 			} else if (storyAcc.getVipType() == VipType.MONTH) {
 				storyAcc.setEndTime(DateUtils.addMonths(curr, 1));
-
 			} else if (storyAcc.getVipType() == VipType.QUARTER) {
 				storyAcc.setEndTime(DateUtils.addMonths(curr, 3));
-
 			} else if (storyAcc.getVipType() == VipType.YEAR) {
 				storyAcc.setEndTime(DateUtils.addYears(curr, 1));
-
 			}
 
 			accountRepo.save(storyAcc);
-			res.put("state", 1);
-			res.put("end_time", storyAcc.getEndTime());
-			return res;
+			return WoolResult.success(storyAcc.getEndTime());
 
-		} else {
+		}else if(storyAcc.getMeid() == null && storyAcc.getEndTime() != null) {
+			// 重新绑定设备
+			storyAcc.setMeid(account.getMeid());
+			accountRepo.save(storyAcc);
+			return WoolResult.success(storyAcc.getEndTime());
+			
+		} else if (account.getMeid().equals(storyAcc.getMeid())) {
+			// 校验激活码是否过期
 			Date curr = new Date();
 			if (curr.compareTo(storyAcc.getEndTime()) < 0) {
-				res.put("state", 1);
-				res.put("end_time", storyAcc.getEndTime());
+				return WoolResult.success(storyAcc.getEndTime());
 			}
 		}
 
-		return res;
+		return WoolResult.fail();
 	}
-
+	
+	@GetMapping("/delete")
+	public WoolResult removeBinding(Account account) {
+		
+		if(account == null || account.getCode() ==null ||  account.getMeid() ==null || account.getDelete() != 1 ) 
+			return WoolResult.fail();
+		
+		Account storyAcc = accountRepo.findByCode(account.getCode());
+		
+		if (storyAcc == null || storyAcc.getEndTime() == null || storyAcc.getMeid() == null ) {
+			return WoolResult.fail();
+		}
+		
+		Date curr = new Date();
+		
+		if(account.getMeid().equals(storyAcc.getMeid()) && curr.compareTo(storyAcc.getEndTime()) < 0) {
+			storyAcc.setMeid(null);
+			accountRepo.save(storyAcc);
+			return WoolResult.success(storyAcc.getEndTime());
+		}
+		
+		return WoolResult.fail();
+	}
 }

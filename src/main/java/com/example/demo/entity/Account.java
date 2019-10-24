@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 @Entity
 public class Account {
@@ -23,6 +24,17 @@ public class Account {
 	private Date createTime;
 
 	private Date endTime;
+
+	@Transient
+	private Integer delete = 0;
+
+	public Integer getDelete() {
+		return delete;
+	}
+
+	public void setDelete(Integer delete) {
+		this.delete = delete;
+	}
 
 	public Integer getId() {
 		return id;
